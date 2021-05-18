@@ -1,14 +1,30 @@
+import React from 'react';
+import { findAllByTestId, findByTestId, findByText, getByLabelText, getByRole, getByText, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
+import Display from './../Display';
+import fetchShow from '../../api/fetchShow';
+jest.mock('../../api/fetchShow');
 
+const testShow = {
+    name: 'Stranger Things',
+    summary: 'summary',
+    seasons: [{id: '1', name: 'hello', episodes: []},{id: '2', name: 'hellooo', episodes: []}]
+}
 
+test("renders without error", () => {
+    render(<Display/>)
+});
 
+test("show component displays when fetch button is pressed", async () => {
+    render(<Display/>)
+    fetchShow.mockResolvedValueOnce(testShow)
+    const button = screen.getByRole('button')
+    userEvent.click(button)
 
-
-
-
-
-
-
+    const showComp = await screen.findByTestId('show-container')
+    expect(showComp).toBeInTheDocument()
+});
 
 
 
